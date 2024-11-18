@@ -87,18 +87,16 @@
       $(function() {
         function filterList() {
           var selectedCategory = $('.select').val();
-          $('.list li').hide();
 
-          if (selectedCategory === 'all') {
-            $('.list li').show();
-          } else {
             $('.list li').each(function() {
               var category = $(this).data('category-type');
-              if (category === selectedCategory) {
+
+              if (selectedCategory === 'all' || category === selectedCategory) {
                 $(this).show();
+              } else {
+                $(this).hide();
               }
             });
-            }
         }
 
         $('.select').change(function() {
