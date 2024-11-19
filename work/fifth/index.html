@@ -87,6 +87,9 @@
       $(function() {
         function filterList() {
           var selectedCategory = $('.select').val();
+          if (selectedCategory === 'all') {
+            return $('.list li').show();
+          }
 
             $('.list li').each(function() {
               var category = $(this).data('category-type');
