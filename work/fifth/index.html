@@ -91,18 +91,15 @@
             return $('.list li').show();
           }
 
-            $('.list li').each(function() {
-              var category = $(this).data('category-type');
+          $('.list li').each(function() {
+            var category = $(this).data('category-type');
 
-              if (category === selectedCategory) {
-                $(this).show();
-              } else {
-                $(this).hide();
-              }
-            });
-            if (selectedCategory === 'all') {
-            $('.list li').show();
-              };
+            if (category === selectedCategory) {
+              $(this).show();
+            } else {
+              $(this).hide();
+            }
+          });
         }
 
         $('.select').change(function() {
