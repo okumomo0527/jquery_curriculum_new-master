@@ -15,7 +15,68 @@
   </div>
   <script src="../../common/js/jquery.js"></script>
   <script>
-    // 回答はここに書いてね
+    $(function () {
+      const failHtml =
+        `
+          <p class="text">逃げられてしまった...</p>
+          <button class="btn mt" data-js="reset">戻る</button>
+        `;
+
+      const doneHtml =
+        `
+              <p class="name">ゲットしました！</p>
+              <div>
+                <img class="img" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="モンスターボール">
+              </div>
+              <button class="btn" data-js="reset">戻る</button>
+        `;
+
+      $('#wrapper').on('click', '[data-js="reset"]', resetScreen);
+      $('#wrapper').on('click', '#pokemon_search', pokemonSearch);
+      $('#wrapper').on('click', '#catch', getPokemon);
+      function resetScreen() {
+        $('#wrapper').html(`
+          <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
+        `);
+      }
+      function pokemonSearch() {
+        const randomId = Math.floor(Math.random() * 151) + 1;
+        $.ajax({
+          url: `https://pokeapi.co/api/v2/pokemon/${randomId}`,
+          method: 'GET'
+        })
+        .done(function (res) {
+          $.ajax({
+            url: res.species.url,
+            method: 'GET'
+          }).done(function(speciesRes) {
+            const japaneseName = speciesRes.names.find(name => name.language.name === 'ja').name;
+            const encountHtml = `
+              <p class="name">${japaneseName}</p>
+              <div>
+                <img class="img" src="${res.sprites.front_default}" alt="${japaneseName}">
+              </div>
+              <div>
+                <button class="btn" id="catch">捕まえる</button>
+                <button class="btn" data-js="reset">逃げる</button>
+              </div>
+            `;
+            $('#wrapper').html(encountHtml);
+          });
+        })
+        .fail(function(err) {
+          console.log(err);
+        });
+      }
+
+      function halfProbability() {
+        return Math.random() < 0.5;
+      }
+
+      function getPokemon() {
+        halfProbability() ? $('#wrapper').html(doneHtml) : $('#wrapper').html(failHtml);
+      }
+    });
   </script>
 </body>
 </html>
