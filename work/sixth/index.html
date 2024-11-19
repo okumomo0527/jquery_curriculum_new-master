@@ -68,12 +68,13 @@
           console.log(err);
         });
       }
+
       function halfProbability() {
-        if (Math.random() < 0.5) {
-          $('#wrapper').html(doneHtml);
-        } else {
+        return Math.random() < 0.5;
+      }
+
       function getPokemon() {
-        }
+        halfProbability() ? $('#wrapper').html(doneHtml) : $('#wrapper').html(failHtml);
       }
     });
   </script>
