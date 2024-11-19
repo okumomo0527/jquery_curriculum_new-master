@@ -16,22 +16,13 @@
   <script src="../../common/js/jquery.js"></script>
   <script>
     $(function () {
-      // 初期画面に戻す
-      function resetScreen() {
-        $('#wrapper').html(`
-          <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
-        `);
-      }
-
-      // 「捕まえる」失敗時の画面表示
-      let failHtml =
+      const failHtml =
         `
           <p class="text">逃げられてしまった...</p>
           <button class="btn mt" data-js="reset">戻る</button>
         `;
 
-      // 「捕まえる」成功時の画面表示
-      let doneHtml =
+      const doneHtml =
         `
               <p class="name">ゲットしました！</p>
               <div>
@@ -40,58 +31,9 @@
               <button class="btn" data-js="reset">戻る</button>
         `;
 
-      // ポケモンを探すボタンがクリックされたときの処理
-      $('#wrapper').on('click', '.btn', function () {
-        let btnId = $(this).attr('id');
-        let dataJs = $(this).data('js');
-
-        if (btnId === 'pokemon_search') {
-          // ランダムなポケモンIDを生成（1〜151）
-          let randomId = Math.floor(Math.random() * 151) + 1;
-
-          // ポケモンAPIからデータを取得
-          $.ajax({
-            url: `https://pokeapi.co/api/v2/pokemon/${randomId}`,
-            method: 'GET'
-          })
-          .done(function (res) {
-            // ポケモンの種族情報を取得
-            $.ajax({
-              url: res.species.url,
-              method: 'GET'
-            }).done(function(speciesRes) {
-              // 日本語名を取得
-              let japaneseName = speciesRes.names.find(name => name.language.name === 'ja').name;
-
-              // ポケモンを表示（日本語名を使用）
-              let encountHtml = `
-                <p class="name">${japaneseName}</p>
-                <div>
-                  <img class="img" src="${res.sprites.front_default}" alt="${japaneseName}">
-                </div>
-                <div>
-                  <button class="btn" id="catch">捕まえる</button>
-                  <button class="btn" data-js="reset">逃げる</button>
-                </div>
-              `;
-              $('#wrapper').html(encountHtml);
-            });
-
-          }).fail(function(err) {
-            console.log(err);
-          });
-
-        } else if (btnId === 'catch') {
-          // 捕まえるボタンの処理
-          if (Math.random() < 0.5) {
-            $('#wrapper').html(doneHtml);
-          } else {
-            // 捕まえる失敗時
-            $('#wrapper').html(failHtml);
-          }
-        } else if (dataJs === 'reset') {
-          // 初期画面に戻す
-          resetScreen();
+        const randomId = Math.floor(Math.random() * 151) + 1;
+            const japaneseName = speciesRes.names.find(name => name.language.name === 'ja').name;
+            const encountHtml = `
         }
       });
     });
