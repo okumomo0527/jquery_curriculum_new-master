@@ -91,12 +91,15 @@
             $('.list li').each(function() {
               var category = $(this).data('category-type');
 
-              if (selectedCategory === 'all' || category === selectedCategory) {
+              if (category === selectedCategory) {
                 $(this).show();
               } else {
                 $(this).hide();
               }
             });
+            if (selectedCategory === 'all') {
+            $('.list li').show();
+              };
         }
 
         $('.select').change(function() {
